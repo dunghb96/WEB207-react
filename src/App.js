@@ -5,7 +5,7 @@ import Banner from './components/Banner';
 import Albums from './components/Album';
 import Hello from './components/Hello';
 import Products from './components/Products';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Footer from './components/Footer';
 import Addproduct from './components/Addproduct';
 
@@ -27,30 +27,46 @@ function App() {
     { id: '2', desc: 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.2',image:'https://picsum.photos/359/255' },
     { id: '3', desc: 'This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.3',image:'https://picsum.photos/359/255' }
   ])
-  const [state,setState]=useState("dung")
-  const onHandle=()=>{
-    setState("Hung")
-  } 
-  const [color1,setColor]=useState("green")
-  const click=()=>{
-    setColor("red")
-  }
+
+
+  // const [state,setState]=useState("dung")
+  // const onHandle=()=>{
+  //   setState("Hung")
+  // } 
+  // const [color1,setColor]=useState("green")
+  // const click=()=>{
+  //   setColor("red")
+  // }
   const handleAdd=(value)=>{
     console.log('App.js', value);
+    setAlbum([
+      ...album,
+      value
+    ])
   }
+  const onHandleRemove=(id)=>{
+    console.log('App.js',id);
+  }
+
+useEffect(() => {
+  fetch('https://6008fb750a54690017fc2848.mockapi.io/products')
+  .then(response => response.json())
+  .then(data => setAlbum((data)))
+}, [])
+
   return (
     
     <div className="App">
       <Header/>
       <main>
         <Banner/>
-        <p>{state}</p>
+        {/* <p>{state}</p>
         <button onClick={onHandle}>click here</button>
         <div  style={{background
           :color1,width:100,height:100}}></div>
-        <button onClick={click}>changeColor</button>
+        <button onClick={click}>changeColor</button> */}
 
-        <Addproduct onAdd={handleAdd}/>
+        <Addproduct onAdd={handleAdd} onDelete={onHandleRemove}/>
 
         <Albums data={album}/>
       </main>

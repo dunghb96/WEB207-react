@@ -1,29 +1,48 @@
-import React ,{useState} from 'react'
+import React, { useState } from 'react'
+import { useForm } from "react-hook-form"
 
-
-const Addproduct = ({onAdd}) => {
-    const [value,setValue]=useState({
-        username:"",
-        age:""
-    })
-    const onHandleChange=(e)=>{
-        setValue(e.target.value)
-    }
-    const onHandleSubmit=(e)=>{
-        e.preventDefault()
-        if(value){
-            onAdd(value)
-        }
-    }
+const Addproduct = ({ onAdd }) => {
+    const { register, handleSubmit,  errors } = useForm();
+    const onSubmit = data => onAdd(data);
+    // const [inputValue, setInputValue] = useState({
+    //     username: "",
+    //     age: ""
+    // })
+    // const onHandleChange = (e) => {
+    //     const name = e.target.name
+    //     const value = e.target.value
+    //     setInputValue({
+    //         ...inputValue,
+    //         [name]: value
+    //     })
+    // }
+    // const onHandleSubmit = (e) => {
+    //     e.preventDefault()
+    //     if (inputValue) {
+    //         onAdd(inputValue)
+    //     }
+    // }
     return (
-        <>
-            <form action="" onSubmit={onHandleSubmit}>
-                <input type="text" name="username" defaultValue={value} onChange={onHandleChange}/>
-                <input type="text" name="age" defaultValue={value} onChange={onHandleChange}/>
-                <button type="submit">Add</button>
+        <div className="w-25 mx-auto">
+            <form action="" onSubmit={handleSubmit(onSubmit)} >
+                <br />
+                <div className="form-group mb2">
+                    <input type="text" name="username" ref={register({ required: true })} className="form-control" placeholder="tên sản phẩm" />
+                    {errors.username && <span className="text-danger">bắt buộc điền ô này</span>}
+                    <br/>
+                </div>
+                <div className="form-group mb2">
+                   <input type="number" name="age" ref={register({ required: true })} className="form-control" placeholder="giá"/><br />
+                    {errors.age && <span className="text-danger">bắt buộc điền ô này</span>}<br/>
+                </div>
+                <div className="form-group mb2">
+                   <textarea name="desc"  cols="50" rows="5" ref={register} ></textarea>
+                    
+                </div>
+                <button type="submit" className="btn btn-primary">Add-new</button>
             </form>
-            {value}
-        </>
+    
+        </div>
     )
 }
 
